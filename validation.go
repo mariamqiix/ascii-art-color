@@ -8,8 +8,6 @@ import (
 
 func Validation() string {
 	//To check the number of arguments
-	// colors := {"red", "green", "yellow", "blue", "purple", "cyan", "white"}
-	// codes := {"\033[31m", "\033[32m",  "\033[33m",  "\033[34m", "\033[35m", "\033[36m",  "\033[37m"}
 	val := "yes"
 	a := 3
 	b := 1
@@ -29,9 +27,18 @@ func Validation() string {
 		} else {
 			Test = strings.Index(os.Args[1], "--color=")
 		}
-
+		FlgForcolor := false
 		if strings.Index(os.Args[1], "--color=") == 0 {
 			val = "color"
+			if  len(os.Args) == 4 && len(os.Args[3])> len(os.Args[2]) && os.Args[3] != "standard" && os.Args[3] != "shadow" && os.Args[3] != "thinkertoy" {
+				d := strings.Index(os.Args[3], os.Args[2])
+				if d == -1 {
+					Error()
+				} else {
+					FlgForcolor = true
+					val = "colorWletter"
+				}
+			}
 			color := strings.ToLower(strings.TrimPrefix(os.Args[1], "--color="))
 			if CheckColor(color) != "NO" {
 				flag2 = true
@@ -50,13 +57,25 @@ func Validation() string {
 				os.Exit(0)
 			}
 		}
-		if len(os.Args) == a {
+		if FlgForcolor {
+			for g := 0; g < len(os.Args[3]); g++ {
+				if os.Args[3][g] > 126 || os.Args[3][g] < 32 {
+					fmt.Println("ERROR: ascii letters only")
+					os.Exit(0)
+				}
+			}
+		}
+
+		if len(os.Args) == a && !FlgForcolor  {
+			fmt.Println("Hi1")
 			FontType := strings.ToLower(os.Args[a-1])
 			if FontType != "standard" && FontType != "shadow" && FontType != "thinkertoy" {
 				Error()
 			}
-		} else if len(os.Args) == 2 || (Test == 0 && len(os.Args) == 3) {
+		} else if len(os.Args) == 2 || (Test == 0 && len(os.Args) == 3) || FlgForcolor {
+			// fmt.Println("Hi2")
 		} else {
+			fmt.Println("Hi3")
 			Error()
 		}
 	} else {

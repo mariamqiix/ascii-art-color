@@ -15,12 +15,16 @@ func main() {
 		if validation == "output" || validation == "color" {
 			a++
 			b++
+		} else if validation == "colorWletter" {
+			a += 2
+			b += 2
 		}
+
 		WordsInArr := strings.Split(os.Args[a], "\\n")
 		fileName := "standard"
-		if len(os.Args) == 3 && validation != "output"  && validation != "color" {
+		if len(os.Args) == 3 && validation != "output" && validation != "color" {
 			fileName = strings.ToLower(os.Args[b])
-		} else if len(os.Args) == 4 {
+		} else if len(os.Args) == 4 && validation != "colorWletter" {
 			fileName = strings.ToLower(os.Args[b])
 		}
 		if ascii.OnlyContains(os.Args[a], "\\n") {
@@ -37,9 +41,14 @@ func main() {
 			if validation == "output" {
 				ascii.WriteFile(Words, FirstWord)
 				FirstWord = false
-			} else if validation == "color" {
-				color := strings.TrimPrefix(os.Args[1], "--color=")
-				PrintWithColor(Words, ascii.CheckColor(strings.ToLower(color)))
+			} else if validation == "color" || validation == "colorWletter" {
+				letter := Text1
+				letterLen := "NO"
+				color := ascii.CheckColor(strings.ToLower(strings.TrimPrefix(os.Args[1], "--color=")))
+				if validation == "colorWletter" {
+					letterLen = os.Args[a-1]
+				}
+				PrintWithColor(Words, color, letter, letterLen)
 			} else {
 				for w := 0; w < 8; w++ {
 					if len(Text1) == 0 {
@@ -58,14 +67,71 @@ func main() {
 	}
 }
 
-func PrintWithColor(Words [][]string, color string) {
+func PrintWithColor(Words [][]string, color, letterA, letterLenA string) {
+	TheWord := letterA
+	letterLen := len(letterLenA)
+	colorB := color
+	var nbr []int
+	wordA := ""
+	nn := len(letterA)
+	c := 0
+	for i := 0; i < len(letterA); i++ {
+		before, after, found := strings.Cut(TheWord, letterLenA)
+		if found == true {
+			if len(after) != 0 {
+				wordA = after
+				c = len(after)
+			} else if len(before) != 0 {
+				wordA = before
+				c = len(after)
+			}
+			nn = len(letterA) - c - len(letterLenA)
+			nbr = append(nbr, nn)
+		} else {
+			break
+		}
+		TheWord = wordA
+	}
+	fmt.Println(nbr)
+	flag := true
 	for w := 0; w < 8; w++ {
+		d := 0
+		//strings.Index(letterA, letterLenA)
 		// if len(Text1) == 0 {
 		// 	break
 		// }
+		a := 1
+		FlagB := true
 		for n := 0; n < len(Words); n++ {
-			fmt.Print(color, Words[n][w])
-			// fmt.Sprint(Words[n][w])
+			if letterLenA != "NO" {
+				if len(nbr) != 0 {
+					fmt.Print(d)
+					chngeLetter := nbr[d]
+					if letterLen == 1 && chngeLetter == n {
+						colorB = color
+						chngeLetter++
+						FlagB = false
+					} else if chngeLetter <= n && a <= letterLen && FlagB {
+						a++
+						colorB = color
+						chngeLetter++
+						if chngeLetter == n || letterLen == a {
+							flag = false
+						}
+					} else {
+						colorB = "\033[0m"
+						if d+1 < len(nbr) && !flag {
+							FlagB = true
+							a = 1
+							d++
+							flag = true
+						}
+					}
+				} else {
+					colorB = "\033[0m"
+				}
+			}
+			fmt.Print(colorB, Words[n][w])
 		}
 		if w+1 != 8 {
 			fmt.Println()

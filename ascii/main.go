@@ -18,8 +18,10 @@ func main() {
 		} else if validation == "colorWletter" || validation == "colorWletterWfont" {
 			a += 2
 			b += 2
+		} else if validation == "colorW2letter" {
+			a += 4
+			b += 4
 		}
-		fmt.Println(validation)
 		WordsInArr := strings.Split(os.Args[a], "\\n")
 		fileName := "standard"
 		if len(os.Args) == 3 && validation != "output" && validation != "color" {
@@ -43,12 +45,14 @@ func main() {
 			if validation == "output" {
 				ascii.WriteFile(Words, FirstWord)
 				FirstWord = false
-			} else if validation == "color" || validation == "colorWletter" || validation == "colorWletterWfont" {
+			} else if validation == "color" || validation == "colorWletter" || validation == "colorWletterWfont" || validation == "colorW2letter" {
 				letter := Text1
 				letterLen := "NO"
 				color := ascii.CheckColor(strings.ToLower(strings.TrimPrefix(os.Args[1], "--color=")))
 				if validation == "colorWletter" || validation == "colorWletterWfont" {
 					letterLen = os.Args[a-1]
+				} else if validation == "colorW2letter" {
+					letterLen = os.Args[4]
 				}
 				PrintWithColor(Words, color, letter, letterLen)
 			} else {
@@ -78,15 +82,10 @@ func PrintWithColor(Words [][]string, color, letterA, letterLenA string) {
 	nn := len(letterA)
 	c := 0
 	for i := 0; i < len(letterA); i++ {
-		before, after, found := strings.Cut(TheWord, letterLenA)
+		_, after, found := strings.Cut(TheWord, letterLenA)
 		if found == true {
-			if len(after) != 0 {
-				wordA = after
-				c = len(after)
-			} else if len(before) != 0 {
-				wordA = before
-				c = len(after)
-			}
+			wordA = after
+			c = len(after)
 			nn = len(letterA) - c - len(letterLenA)
 			nbr = append(nbr, nn)
 		} else {
@@ -94,11 +93,9 @@ func PrintWithColor(Words [][]string, color, letterA, letterLenA string) {
 		}
 		TheWord = wordA
 	}
-	fmt.Println(nbr)
 	FlagB := false
 	for w := 0; w < 8; w++ {
 		d := 0
-		//strings.Index(letterA, letterLenA)
 		// if len(Text1) == 0 {
 		// 	break
 		// }

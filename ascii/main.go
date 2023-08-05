@@ -93,42 +93,34 @@ func PrintWithColor(Words [][]string, color, letterA, letterLenA string) {
 		TheWord = wordA
 	}
 	fmt.Println(nbr)
-	flag := true
+	FlagB := false
 	for w := 0; w < 8; w++ {
 		d := 0
 		//strings.Index(letterA, letterLenA)
 		// if len(Text1) == 0 {
 		// 	break
 		// }
-		a := 1
-		FlagB := true
+		a := 0
 		for n := 0; n < len(Words); n++ {
 			if letterLenA != "NO" {
 				if len(nbr) != 0 {
-					fmt.Print(d)
 					chngeLetter := nbr[d]
-					if letterLen == 1 && chngeLetter == n {
+					if chngeLetter == n {
+						FlagB = true
+					}
+					if FlagB {
 						colorB = color
-						chngeLetter++
-						FlagB = false
-					} else if chngeLetter <= n && a <= letterLen && FlagB {
 						a++
-						colorB = color
-						chngeLetter++
-						if chngeLetter == n || letterLen == a {
-							flag = false
+						if a == letterLen {
+							FlagB = false
+							a = 0
+							if d+1 < len(nbr) {
+								d++
+							}
 						}
 					} else {
 						colorB = "\033[0m"
-						if d+1 < len(nbr) && !flag {
-							FlagB = true
-							a = 1
-							d++
-							flag = true
-						}
 					}
-				} else {
-					colorB = "\033[0m"
 				}
 			}
 			fmt.Print(colorB, Words[n][w])

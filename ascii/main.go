@@ -15,17 +15,19 @@ func main() {
 		if validation == "output" || validation == "color" {
 			a++
 			b++
-		} else if validation == "colorWletter" {
+		} else if validation == "colorWletter" || validation == "colorWletterWfont" {
 			a += 2
 			b += 2
 		}
-
+		fmt.Println(validation)
 		WordsInArr := strings.Split(os.Args[a], "\\n")
 		fileName := "standard"
 		if len(os.Args) == 3 && validation != "output" && validation != "color" {
 			fileName = strings.ToLower(os.Args[b])
 		} else if len(os.Args) == 4 && validation != "colorWletter" {
 			fileName = strings.ToLower(os.Args[b])
+		} else if validation == "colorWletterWfont" {
+			fileName = strings.ToLower(os.Args[4])
 		}
 		if ascii.OnlyContains(os.Args[a], "\\n") {
 			WordsInArr = WordsInArr[:len(WordsInArr)-1]
@@ -41,11 +43,11 @@ func main() {
 			if validation == "output" {
 				ascii.WriteFile(Words, FirstWord)
 				FirstWord = false
-			} else if validation == "color" || validation == "colorWletter" {
+			} else if validation == "color" || validation == "colorWletter" || validation == "colorWletterWfont" {
 				letter := Text1
 				letterLen := "NO"
 				color := ascii.CheckColor(strings.ToLower(strings.TrimPrefix(os.Args[1], "--color=")))
-				if validation == "colorWletter" {
+				if validation == "colorWletter" || validation == "colorWletterWfont" {
 					letterLen = os.Args[a-1]
 				}
 				PrintWithColor(Words, color, letter, letterLen)

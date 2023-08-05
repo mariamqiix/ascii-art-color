@@ -35,13 +35,26 @@ func Validation() string {
 		if len(os.Args) == 3 {
 			CheckLetter(os.Args[2])
 		} else if len(os.Args) == 4 {
-			val = "colorWletter"
 			if os.Args[3] != "standard" && os.Args[3] != "shadow" && os.Args[3] != "thinkertoy" {
+				val = "colorWletter"
 				CheckLetter(os.Args[2])
 				CheckLetter(os.Args[3])
 				if strings.Index(os.Args[3], os.Args[2]) == -1 {
 					Error()
 				}
+			} else {
+
+			}
+		} else if len(os.Args) == 5 {
+			if os.Args[4] == "standard" || os.Args[4] == "shadow" || os.Args[4] == "thinkertoy" {
+				val = "colorWletterWfont"
+				CheckLetter(os.Args[2])
+				CheckLetter(os.Args[3])
+				if strings.Index(os.Args[3], os.Args[2]) == -1 {
+					Error()
+				}
+			} else {
+				Error()
 			}
 		} else {
 			Error()
@@ -52,7 +65,6 @@ func Validation() string {
 	} else if len(os.Args) == 3 {
 		CheckLetter(os.Args[1])
 		CheckFont(os.Args[2])
-		val = os.Args[2]
 	} else {
 		Error()
 	}

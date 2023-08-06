@@ -22,9 +22,8 @@ func Validation() string {
 		}
 	} else if strings.Index(os.Args[1], "--color=") == 0 {
 		val = "color"
-		//&&
+		color := strings.ToLower(strings.TrimPrefix(os.Args[1], "--color="))
 		if len(os.Args[1]) > 9 {
-			color := strings.ToLower(strings.TrimPrefix(os.Args[1], "--color="))
 			if CheckColor(color) == "NO" {
 				Error()
 			}
@@ -58,6 +57,10 @@ func Validation() string {
 			}
 		} else if len(os.Args) == 6 {
 			val = "colorW2letter"
+			color2 := strings.ToLower(strings.TrimPrefix(os.Args[3], "--color="))
+			if CheckColor(color2) == "NO" || color2 == color {
+				Error()
+			}
 			if strings.Index(os.Args[3], "--color=") == 0 {
 				CheckLetter(os.Args[2])
 				CheckLetter(os.Args[4])

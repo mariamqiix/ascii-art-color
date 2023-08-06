@@ -3,6 +3,8 @@ package ascii
 import (
 	"fmt"
 	"os"
+	"strconv"
+	"strings"
 )
 
 func PrintWithColor(Words [][]string, color, Text1, letterLenA, validation string) {
@@ -12,9 +14,6 @@ func PrintWithColor(Words [][]string, color, Text1, letterLenA, validation strin
 	FlagB := false
 	for w := 0; w < 8; w++ {
 		d := 0
-		if len(Text1) == 0 {
-			break
-		}
 		a := 0
 		for n := 0; n < len(Words); n++ {
 			if letterLenA != "NO!!-" {
@@ -37,6 +36,26 @@ func PrintWithColor(Words [][]string, color, Text1, letterLenA, validation strin
 						colorB = "\033[0m"
 					}
 				}
+			}
+			if strings.Contains(colorB, "rgb") {
+				colorB = strings.ReplaceAll(colorB, " ", "")
+				c := (strings.Split(strings.TrimRight(strings.TrimPrefix(colorB, "rgb("), ")"), ","))
+				var a []int
+				for i := 0; i < len(c); i++ {
+					check, _ := strconv.Atoi(c[i])
+					a = append(a, check)
+				}
+				red := a[0]
+				green := a[1]
+				blue := a[2]
+				colorB = fmt.Sprintf("\033[38;2;%d;%d;%dm", red, green, blue)
+			} else if strings.Contains(colorB, "#") {
+				colorB = colorB[1:]
+				rgb, _ := strconv.ParseUint(colorB, 16, 32)
+				red := int(rgb >> 16 & 0xFF)
+				green := int(rgb >> 8 & 0xFF)
+				blue := int(rgb & 0xFF)
+				colorB = fmt.Sprintf("\033[38;2;%d;%d;%dm", red, green, blue)
 			}
 			fmt.Print(colorB, Words[n][w])
 		}

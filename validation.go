@@ -38,7 +38,7 @@ func Validation() string {
 				val = "colorWletter"
 				CheckLetter(os.Args[2])
 				CheckLetter(os.Args[3])
-				if strings.Index(os.Args[3], os.Args[2]) == -1 {
+				if strings.Index(os.Args[3], os.Args[2]) == -1 || len(os.Args[2]) == 0 {
 					Error()
 				}
 			} else {
@@ -49,7 +49,7 @@ func Validation() string {
 				val = "colorWletterWfont"
 				CheckLetter(os.Args[2])
 				CheckLetter(os.Args[3])
-				if strings.Index(os.Args[3], os.Args[2]) == -1 {
+				if strings.Index(os.Args[3], os.Args[2]) == -1 || len(os.Args[2]) == 0 {
 					Error()
 				}
 			} else {
@@ -58,14 +58,14 @@ func Validation() string {
 		} else if len(os.Args) == 6 {
 			val = "colorW2letter"
 			color2 := strings.ToLower(strings.TrimPrefix(os.Args[3], "--color="))
-			if CheckColor(color2) == "NO" || color2 == color {
+			if CheckColor(color2) == "NO"  { // || color2 == color
 				Error()
 			}
 			if strings.Index(os.Args[3], "--color=") == 0 {
 				CheckLetter(os.Args[2])
 				CheckLetter(os.Args[4])
 				CheckLetter(os.Args[5])
-				if strings.Index(os.Args[5], os.Args[2]) == -1 || strings.Index(os.Args[5], os.Args[4]) == -1 {
+				if strings.Index(os.Args[5], os.Args[2]) == -1 || strings.Index(os.Args[5], os.Args[4]) == -1 || os.Args[2] == os.Args[4] {
 					Error()
 				}
 			} else {

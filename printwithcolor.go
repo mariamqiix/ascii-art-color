@@ -7,25 +7,23 @@ import (
 	"strings"
 )
 
-func PrintWithColor(Words [][]string, color, Text1, letterLenA, validation string) {
-	letterLen := len(letterLenA)
+func PrintWithColor(Words [][]string, color, Text1, letter1, validation string) {
 	colorB := color
-	nbr, colors := CheckPostion(Text1, colorB, letterLenA, validation)
+	nbr, colors := CheckPostion(Text1, colorB, letter1, validation)
 	FlagB := false
 	for w := 0; w < 8; w++ {
 		d := 0
 		a := 0
 		for n := 0; n < len(Words); n++ {
-			if letterLenA != "NO!!-" {
+			if letter1 != "NO!!-" {
 				if len(nbr) != 0 {
-					chngeLetter := nbr[d]
-					if chngeLetter == n {
+					if nbr[d] == n {
 						FlagB = true
 					}
 					if FlagB {
 						colorB = colors[d]
 						a++
-						if (a == letterLen && colorB == color) || (validation == "colorW2letter" && a == len(os.Args[4]) && colorB != color) {
+						if (a == len(letter1) || (validation == "colorW2letter" && a == len(os.Args[4]))) && colorB == colors[d] {
 							FlagB = false
 							a = 0
 							if d+1 < len(nbr) {
@@ -35,6 +33,8 @@ func PrintWithColor(Words [][]string, color, Text1, letterLenA, validation strin
 					} else {
 						colorB = "\033[0m"
 					}
+				} else {
+					colorB = "\033[0m"
 				}
 			}
 			if strings.Contains(colorB, "rgb") {

@@ -37,26 +37,23 @@ func main() {
 
 	for l := 0; l < len(WordsInArr); l++ {
 		var Words [][]string
-		Text1 := WordsInArr[l]
-		Text1 = strings.ReplaceAll(Text1, "\\t", "   ")
+		Text1 := strings.ReplaceAll(WordsInArr[l], "\\t", "   ")
 
 		for j := 0; j < len(Text1); j++ {
 			Words = append(Words, ascii.ReadLetter(Text1[j], fileName))
 		}
-
 		if validation == "output" {
 			ascii.WriteFile(Words, FirstWord)
 			FirstWord = false
 		} else if validation == "color" || validation == "colorWletter" || validation == "colorWletterWfont" || validation == "colorW2letter" {
-			letterLen := "NO!!-"
+			letter1 := "NO!!-"
 			color := ascii.CheckColor(strings.ToLower(strings.TrimPrefix(os.Args[1], "--color=")))
 			if validation == "colorWletter" || validation == "colorWletterWfont" {
-				letterLen = os.Args[index-1]
+				letter1 = os.Args[index-1]
 			} else if validation == "colorW2letter" {
-				letterLen = os.Args[2]
+				letter1 = os.Args[2]
 			}
-			ascii.PrintWithColor(Words, color, Text1, letterLen, validation)
-
+			ascii.PrintWithColor(Words, color, Text1, letter1, validation)
 		} else {
 			for w := 0; w < 8; w++ {
 				if len(Text1) == 0 {

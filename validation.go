@@ -25,9 +25,11 @@ func Validation() string {
 		color := strings.ToLower(strings.TrimPrefix(os.Args[1], "--color="))
 		if len(os.Args[1]) > 9 {
 			if CheckColor(color) == "NO" {
+				fmt.Println("color does not exist")
 				Error()
 			}
 		} else {
+			fmt.Println("color does not exist")
 			Error()
 		}
 
@@ -39,6 +41,7 @@ func Validation() string {
 				CheckLetter(os.Args[2])
 				CheckLetter(os.Args[3])
 				if strings.Index(os.Args[3], os.Args[2]) == -1 || len(os.Args[2]) == 0 {
+					fmt.Println("letters to be colored does not exist")
 					Error()
 				}
 			} else {
@@ -50,6 +53,7 @@ func Validation() string {
 				CheckLetter(os.Args[2])
 				CheckLetter(os.Args[3])
 				if strings.Index(os.Args[3], os.Args[2]) == -1 || len(os.Args[2]) == 0 {
+					fmt.Println("letters to be colored does not exist")
 					Error()
 				}
 			} else {
@@ -58,14 +62,16 @@ func Validation() string {
 		} else if len(os.Args) == 6 {
 			val = "colorW2letter"
 			color2 := strings.ToLower(strings.TrimPrefix(os.Args[3], "--color="))
-			if CheckColor(color2) == "NO"  { // || color2 == color
+			if CheckColor(color2) == "NO" || color2 == color {
+				fmt.Println("The colors should be different")
 				Error()
 			}
 			if strings.Index(os.Args[3], "--color=") == 0 {
 				CheckLetter(os.Args[2])
 				CheckLetter(os.Args[4])
 				CheckLetter(os.Args[5])
-				if strings.Index(os.Args[5], os.Args[2]) == -1 || strings.Index(os.Args[5], os.Args[4]) == -1 || os.Args[2] == os.Args[4] {
+				if strings.Index(os.Args[5], os.Args[2]) == -1 || strings.Index(os.Args[5], os.Args[4]) == -1 || os.Args[2] == os.Args[4] || len(os.Args[2]) == 0 || len(os.Args[4]) == 0 {
+					fmt.Println("letters to be colored does not exist")
 					Error()
 				}
 			} else {

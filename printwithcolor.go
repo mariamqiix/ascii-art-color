@@ -26,7 +26,7 @@ func PrintWithColor(Words [][]string, color, Text1, letter1, validation string) 
 					if FlagB {
 						colorB = colors[d]
 						a++
-						if (a == len(letter1) || (validation == "colorW2letter" && a == len(os.Args[4]))) && colorB == colors[d] {
+						if (a == len(letter1) && colorB == color) || (validation == "colorW2letter" && a == len(os.Args[4]) && color != colors[d]) {
 							FlagB = false
 							a = 0
 							if d+1 < len(nbr) {
